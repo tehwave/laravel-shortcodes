@@ -2,6 +2,7 @@
 
 namespace tehwave\Shortcodes;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 
 class Shortcode
@@ -19,6 +20,13 @@ class Shortcode
      * @var array
      */
     protected static $namespacedClassesCache = [];
+
+    /**
+     * The tag to match in content.
+     *
+     * @var string
+     */
+    protected static $tag;
 
     /**
      * The shortcode's attributes.
@@ -48,6 +56,26 @@ class Shortcode
     }
 
     /**
+     * Retrieve the tag to match in content.
+     *
+     * Should the tag not be pre-defined, we will resolve
+     * the tag from the class name into snake_case.
+     *
+     * @return string
+     */
+    public function getTag(): string
+    {
+        if (! isset(static::$tag)) {
+            $className = class_basename($this);
+
+            $snakedClassName = Str::snake($className);
+
+            static::$tag = $snakedClassName;
+        }
+
+        return static::$tag;
+    }
+
     /**
      * The code to run when the Shortcode is being compiled.
      *
