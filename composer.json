@@ -32,7 +32,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "tehwave\\Shortcodes\\ShortcodesServiceProvider"
+                "tehwave\\Shortcodes\\Providers\\ShortcodesServiceProvider"
             ]
         }
     },
