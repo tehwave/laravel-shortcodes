@@ -48,11 +48,15 @@ class Shortcode
     }
 
     /**
-     * The code to run when the shortcode is being compiled.
+    /**
+     * The code to run when the Shortcode is being compiled.
      *
-     * @return void
+     * You may return a string from here, that will then
+     * be inserted into the content being compiled.
+     *
+     * @return string|null
      */
-    abstract public function execute();
+    abstract public function handle(): ?string;
 
     /**
      * Retrieve all of the Shortcode classes.
