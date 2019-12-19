@@ -5,7 +5,7 @@ namespace tehwave\Shortcodes;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 
-class Shortcode
+abstract class Shortcode
 {
     /**
      * The cache of a list of Shortcode classes.
