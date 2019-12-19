@@ -10,16 +10,16 @@ abstract class Shortcode
     /**
      * The cache of a list of Shortcode classes.
      *
-     * @var array
+     * @return \Illuminate\Support\Collection
      */
-    protected static $classesCache = [];
+    protected static $classesCache;
 
     /**
      * The cache of a list of namespaced Shortcode classes.
      *
-     * @var array
+     * @return \Illuminate\Support\Collection
      */
-    protected static $namespacedClassesCache = [];
+    protected static $namespacedClassesCache;
 
     /**
      * The tag to match in content.
