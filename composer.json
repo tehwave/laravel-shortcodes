@@ -1,0 +1,42 @@
+{
+    "name": "tehwave/laravel-shortcodes",
+    "description": "Simple, elegant WordPress-like Shortcodes the Laravel way",
+    "keywords": [
+        "php",
+        "laravel",
+        "package",
+        "shortcodes",
+        "wordpress",
+        "tehwave"
+    ],
+    "homepage": "https://github.com/tehwave/laravel-shortcodes",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Peter Jørgensen",
+            "email": "peterchrjoergensen@gmail.com",
+            "homepage": "https://peterchrjoergensen.dk",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "illuminate/console": "^6.0",
+        "illuminate/support": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "tehwave\\Shortcodes\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "tehwave\\Shortcodes\\ShortcodesServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
