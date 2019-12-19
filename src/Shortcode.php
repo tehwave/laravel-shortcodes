@@ -130,12 +130,25 @@ abstract class Shortcode
     }
 
     /**
+     * Retrieve all of the Shortcode classes as instances.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getInstantiatedClasses()
+    {
+        return self::getNamespacedClasses()
+            ->transform(function ($class) {
+                return new $class;
+            });
+    }
+
+    /**
      * A shorthand method for getNamespacedClasses.
      *
      * @return \Illuminate\Support\Collection
      */
     public static function all(): Collection
     {
-        return static::getNamespacedClasses();
+        return static::getInstantiatedClasses();
     }
 }
