@@ -1,0 +1,19 @@
+<?php
+
+namespace DummyNamespace;
+
+use tehwave\Shortcodes\Shortcode;
+
+class DummyClass extends Shortcode
+{
+    /**
+     * The code to run when the shortcode is being compiled.
+     *
+     * @return void
+     */
+    public function execute()
+    {
+        // this->attributes
+        // this->body
+    }
+}
