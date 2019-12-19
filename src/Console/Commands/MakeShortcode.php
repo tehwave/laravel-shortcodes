@@ -1,6 +1,6 @@
 <?php
 
-namespace tehwave\Shortcodes\Console\Commands
+namespace tehwave\Shortcodes\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
