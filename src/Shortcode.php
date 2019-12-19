@@ -87,6 +87,31 @@ abstract class Shortcode
     abstract public function handle(): ?string;
 
     /**
+     * This method runs when the shortcode has been parsed from content.
+     *
+     * @param  array  $matches
+     *
+     * @return string|null
+     */
+    public function dispatch(array $matches): ?string
+    {
+        // Let's make these matches human readable.
+        [$shortcode, $prefix, $tag, $attributes, $tagClose, $body, $suffix] = $matches;
+
+        // Allows escaping shortcodes by wrapping in square brackets.
+        if ($prefix === '[' && $suffix === ']') {
+            return substr($shortcode, 1, -1);
+        }
+
+        // Set up our inputs and run our handle.
+        $this->attributes = Compiler::resolveAttributes($attributes);
+
+        $this->body = $body;
+
+        return $this->handle();
+    }
+
+    /**
      * Retrieve all of the Shortcode classes.
      *
      * @return \Illuminate\Support\Collection
@@ -150,5 +175,17 @@ abstract class Shortcode
     public static function all(): Collection
     {
         return static::getInstantiatedClasses();
+    }
+
+    /**
+     * A shorthand method for compile method on Compiler.
+     *
+     * @param  string $content
+     *
+     * @return string
+     */
+    public static function compile(string $content): string
+    {
+        return Compiler::compile($content);
     }
 }
