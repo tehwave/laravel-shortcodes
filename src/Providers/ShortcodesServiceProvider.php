@@ -3,7 +3,7 @@
 namespace tehwave\Shortcodes\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use tehwave\Achievements\Console\Commands\MakeShortcode;
+use tehwave\Shortcodes\Console\Commands\MakeShortcode;
 
 class ShortcodesServiceProvider extends ServiceProvider
 {
