@@ -34,7 +34,7 @@ class MakeShortcode extends GeneratorCommand
      */
     protected function getStub(): string
     {
-        return __DIR__.'/../../stubs/Shortcode.stub';
+        return __DIR__.'/../../../stubs/Shortcode.stub';
     }
 
     /**
