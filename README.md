@@ -3,6 +3,7 @@
 Simple, elegant WordPress-like Shortcodes the Laravel way
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+[![Build Status](https://travis-ci.org/tehwave/laravel-shortcodes.svg?branch=master)](https://travis-ci.org/tehwave/laravel-shortcodes)
 
 ## Requirements
 
