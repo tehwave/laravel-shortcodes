@@ -168,6 +168,17 @@ abstract class Shortcode
     }
 
     /**
+     * Clears the classes cache.
+     *
+     * @return void
+     */
+    public static function clearCache(): void
+    {
+        static::$classesCache = null;
+        static::$namespacedClassesCache = null;
+    }
+
+    /**
      * A shorthand method for getNamespacedClasses.
      *
      * @return \Illuminate\Support\Collection
