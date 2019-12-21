@@ -2,7 +2,6 @@
 
 namespace tehwave\Shortcodes\Tests;
 
-use File;
 use Orchestra\Testbench\TestCase as Orchestra;
 use tehwave\Shortcodes\Providers\ShortcodesServiceProvider;
 
