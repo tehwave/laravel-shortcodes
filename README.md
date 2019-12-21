@@ -23,7 +23,9 @@ TODO
 
 ## Tests
 
-TODO
+```bash
+composer test
+```
 
 ## Security
 
