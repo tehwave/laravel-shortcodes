@@ -19,7 +19,77 @@ composer require tehwave/laravel-shortcodes
 
 ## Usage
 
-TODO
+`Laravel Shortcodes` work much like Wordpress' [Shortcode API](https://codex.wordpress.org/Shortcode_API).
+
+### Creating Shortcodes
+
+```bash
+php artisan make:shortcode ItalicizeText
+```
+
+This command will place a fresh `Shortcode` class in your new `app/Shortcodes` directory.
+
+Each `Shortcode` class contains a `handle` method, that you may use to output into the compiling content.
+
+Within the `handle` method, you may access the ```attributes``` and ```body``` properties.
+
+```php
+<?php
+
+namespace App\Shortcodes;
+
+use tehwave\Shortcodes\Shortcode;
+
+class ItalicizeText extends Shortcode
+{
+    /**
+     * The code to run when the Shortcode is being compiled.
+     *
+     * You may return a string from here, that will then
+     * be inserted into the content being compiled.
+     *
+     * @return string|null
+     */
+    public function handle(): ?string
+    {
+        if (isset($this->attributes['escape_html']) && $this->attributes['escape_html'] === 'true')) {
+            return sprintf('<i>%s</i>', htmlspecialchars($this->body));
+        }
+
+        return sprintf('<i>%s</i>', $this->body);
+    }
+}
+```
+
+The shortcode's tag is derived from the class name to snake_case. You may specify a custom tag using the ```tag``` property or overwriting the ```getTag``` method.
+
+```php
+<?php
+
+namespace App\Shortcodes;
+
+use tehwave\Shortcodes\Shortcode;
+
+class ItalicizeText extends Shortcode
+{
+    /**
+     * The tag to match in content.
+     *
+     * @var string
+     */
+    protected $tag = 'italics';
+}
+```
+
+### Compiling Shortcodes
+
+```php
+use tehwave\Shortcodes\Shortcode;
+
+$compiledContent = Shortcode::compile('[italics escape_html="true"]<b>Hello World</b>[/italics]');
+
+// <i>&lt;b&gt;Hello World&lt;/b&gt;</i>
+```
 
 ## Tests
 
