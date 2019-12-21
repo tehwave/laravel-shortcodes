@@ -2,6 +2,8 @@
 
 namespace tehwave\Shortcodes;
 
+use Illuminate\Support\Collection;
+
 class Compiler
 {
 	/**
@@ -11,9 +13,10 @@ class Compiler
 	 *
 	 * @return string
 	 */
-	public static function compile(string $content): string
+	public static function compile(string $content, Collection $shortcodes = null): string
 	{
-		return Shortcode::all()->reduce([static::class, 'parse'], $content);
+		return ($shortcodes ?? Shortcode::all())
+			->reduce([static::class, 'parse'], $content);
 	}
 
 	/**
