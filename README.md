@@ -21,6 +21,14 @@ composer require tehwave/laravel-shortcodes
 
 `Laravel Shortcodes` work much like Wordpress' [Shortcode API](https://codex.wordpress.org/Shortcode_API).
 
+```php
+use tehwave\Shortcodes\Shortcode;
+
+$compiledContent = Shortcode::compile('[uppercase]Laravel Shortcodes[/uppercase]');
+
+// LARAVEL SHORTCODES
+```
+
 ### Creating Shortcodes
 
 ```bash
