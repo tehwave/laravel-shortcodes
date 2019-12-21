@@ -159,7 +159,7 @@ abstract class Shortcode
      *
      * @return \Illuminate\Support\Collection
      */
-    public static function getInstantiatedClasses()
+    public static function getInstantiatedClasses(): Collection
     {
         return self::getNamespacedClasses()
             ->transform(function ($class) {
