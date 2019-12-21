@@ -26,7 +26,7 @@ abstract class Shortcode
      *
      * @var string
      */
-    protected static $tag;
+    protected $tag;
 
     /**
      * The shortcode's attributes.
@@ -65,15 +65,15 @@ abstract class Shortcode
      */
     public function getTag(): string
     {
-        if (! isset(static::$tag)) {
+        if (! isset($this->tag)) {
             $className = class_basename($this);
 
             $snakedClassName = Str::snake($className);
 
-            static::$tag = $snakedClassName;
+            $this->tag = $snakedClassName;
         }
 
-        return static::$tag;
+        return $this->tag;
     }
 
     /**
