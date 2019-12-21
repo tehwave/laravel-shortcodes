@@ -17,12 +17,6 @@ Install the package via Composer.
 composer require tehwave/laravel-shortcodes
 ```
 
-As an optional choice, you may publish config as well.
-
-```bash
-php artisan vendor:publish --tag="shortcodes-config"
-```
-
 ## Usage
 
 TODO
