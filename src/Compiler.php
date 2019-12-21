@@ -2,6 +2,8 @@
 
 namespace tehwave\Shortcodes;
 
+use Illuminate\Support\Collection;
+
 class Compiler
 {
 	/**
@@ -11,9 +13,10 @@ class Compiler
 	 *
 	 * @return string
 	 */
-	public static function compile(string $content): string
+	public static function compile(string $content, Collection $shortcodes = null): string
 	{
-		return Shortcode::all()->reduce([static::class, 'parse'], $content);
+		return ($shortcodes ?? Shortcode::all())
+			->reduce([static::class, 'parse'], $content);
 	}
 
 	/**
@@ -25,7 +28,7 @@ class Compiler
 	 *
 	 * @return string
 	 */
-	public static function parse(string $content, Shortcode $shortcode): string
+	public static function parse(string $content, $shortcode): string
 	{
 		$pattern = static::shortcodeRegex($shortcode->getTag());
 
@@ -88,11 +91,11 @@ class Compiler
 	 *
 	 * @return array
 	 */
-	public static function resolveAttributes($attributesText): array
+	public static function resolveAttributes($attributesText): ?array
 	{
 		$attributesText = preg_replace("/[\x{00a0}\x{200b}]+/u", ' ', $attributesText);
 
-		$attributes = [];
+		$attributes = collect([]);
 
 		if (preg_match_all(static::attributeRegex(), $attributesText, $matches, PREG_SET_ORDER)) {
 			foreach ($matches as $match) {
@@ -112,20 +115,22 @@ class Compiler
 			}
 
 			// Reject any unclosed HTML elements.
-			foreach ($attributes as &$value) {
-				if (false !== strpos($value, '<')) {
-					if (1 !== preg_match('/^[^<]*+(?:<[^>]*+>[^<]*+)*+$/', $value)) {
-						$value = '';
-					}
+			$filteredAttributes = $attributes->filter(function ($attribute) {
+				if (strpos($attribute, '<') === false) {
+					return true;
 				}
+
+				return preg_match('/^[^<]*+(?:<[^>]*+>[^<]*+)*+$/', $attribute);
+			});
+
+			if ($filteredAttributes->isEmpty()) {
+				return null;
 			}
 
-			return $attributes;
+			return $filteredAttributes->toArray();
 		}
 
-		$attributes = ltrim($attributesText);
-
-		return $attributes;
+		return null;
 	}
 
 	/**

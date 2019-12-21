@@ -26,7 +26,7 @@ abstract class Shortcode
      *
      * @var string
      */
-    protected static $tag;
+    protected $tag;
 
     /**
      * The shortcode's attributes.
@@ -65,15 +65,15 @@ abstract class Shortcode
      */
     public function getTag(): string
     {
-        if (! isset(static::$tag)) {
+        if (! isset($this->tag)) {
             $className = class_basename($this);
 
             $snakedClassName = Str::snake($className);
 
-            static::$tag = $snakedClassName;
+            $this->tag = $snakedClassName;
         }
 
-        return static::$tag;
+        return $this->tag;
     }
 
     /**
@@ -168,6 +168,17 @@ abstract class Shortcode
     }
 
     /**
+     * Clears the classes cache.
+     *
+     * @return void
+     */
+    public static function clearCache(): void
+    {
+        static::$classesCache = null;
+        static::$namespacedClassesCache = null;
+    }
+
+    /**
      * A shorthand method for getNamespacedClasses.
      *
      * @return \Illuminate\Support\Collection
@@ -184,8 +195,8 @@ abstract class Shortcode
      *
      * @return string
      */
-    public static function compile(string $content): string
+    public static function compile(string $content, Collection $shortcodes = null): string
     {
-        return Compiler::compile($content);
+        return Compiler::compile($content, $shortcodes);
     }
 }
