@@ -184,8 +184,8 @@ abstract class Shortcode
      *
      * @return string
      */
-    public static function compile(string $content): string
+    public static function compile(string $content, Collection $shortcodes = null): string
     {
-        return Compiler::compile($content);
+        return Compiler::compile($content, $shortcodes);
     }
 }
