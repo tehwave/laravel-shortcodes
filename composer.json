@@ -24,10 +24,23 @@
         "illuminate/console": "^6.0",
         "illuminate/support": "^6.0"
     },
+    "require-dev": {
+        "orchestra/testbench": "~3.8.0|^4.0",
+        "phpunit/phpunit": "^8.0"
+    },
     "autoload": {
         "psr-4": {
             "tehwave\\Shortcodes\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tehwave\\Shortcodes\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     },
     "extra": {
         "laravel": {
