@@ -31,9 +31,9 @@ abstract class Shortcode
     /**
      * The shortcode's attributes.
      *
-     * @var array
+     * @var array|null
      */
-    protected $attributes = [];
+    protected $attributes = null;
 
     /**
      * The shortcode's body content.
