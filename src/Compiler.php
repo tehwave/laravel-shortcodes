@@ -89,7 +89,7 @@ class Compiler
      *
 	 * @param  string $attributesText
 	 *
-	 * @return array
+	 * @return array|null
 	 */
 	public static function resolveAttributes($attributesText): ?array
 	{

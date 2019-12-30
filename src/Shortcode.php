@@ -45,10 +45,10 @@ abstract class Shortcode
     /**
      * Create a new Shortcode instance.
      *
-     * @param array       $attributes
-     * @param string|null $body
+     * @param array|null       $attributes
+     * @param string|null      $body
      */
-    public function __construct(array $attributes = [], string $body = null)
+    public function __construct(array $attributes = null, string $body = null)
     {
         $this->attributes = $attributes;
 
