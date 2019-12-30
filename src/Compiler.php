@@ -48,7 +48,7 @@ class Compiler
 	 *
 	 * @return string
 	 */
-	private static function shortcodeRegex(string $tag): string
+	protected static function shortcodeRegex(string $tag): string
 	{
 		// phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- don't remove regex indentation
 		return
@@ -140,7 +140,7 @@ class Compiler
 	 *
 	 * @return string
 	 */
-	private static function attributeRegex(): string
+	protected static function attributeRegex(): string
 	{
 		return '/([\w-]+)\s*=\s*"([^"]*)"(?:\s|$)|([\w-]+)\s*=\s*\'([^\']*)\'(?:\s|$)|([\w-]+)\s*=\s*([^\s\'"]+)(?:\s|$)|"([^"]*)"(?:\s|$)|\'([^\']*)\'(?:\s|$)|(\S+)(?:\s|$)/';
 	}
