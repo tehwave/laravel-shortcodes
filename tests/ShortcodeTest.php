@@ -38,7 +38,7 @@ class ShortcodeTest extends TestCase
      */
     public function testShortcodeNotIsCompiled(): void
     {
-        if (file_exists($path = $this->app->path('Shortcodes') . '/HelloWorld.php')) {
+        if (file_exists($path = $this->app->path('Shortcodes').'/HelloWorld.php')) {
             unlink($path);
 
             Shortcode::clearCache();
@@ -76,7 +76,7 @@ class ShortcodeTest extends TestCase
     }
 
     /**
-     * Test that no attributes are being parsed
+     * Test that no attributes are being parsed.
      *
      * @return void
      */
