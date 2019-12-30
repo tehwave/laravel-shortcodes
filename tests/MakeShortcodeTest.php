@@ -13,7 +13,7 @@ class MakeShortcodeTest extends TestCase
     {
         parent::setUp();
 
-        if (file_exists($path = $this->app->path('Shortcodes') . '/HelloWorld.php')) {
+        if (file_exists($path = $this->app->path('Shortcodes').'/HelloWorld.php')) {
             unlink($path);
         }
     }
@@ -27,6 +27,6 @@ class MakeShortcodeTest extends TestCase
     {
         $this->artisan('make:shortcode', ['name' => 'HelloWorld'])->assertExitCode(0);
 
-        $this->assertFileExists($this->app->path('Shortcodes') . '/HelloWorld.php');
+        $this->assertFileExists($this->app->path('Shortcodes').'/HelloWorld.php');
     }
 }
