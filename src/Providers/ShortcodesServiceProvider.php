@@ -7,7 +7,6 @@ use tehwave\Shortcodes\Console\Commands\MakeShortcode;
 
 class ShortcodesServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap any application services.
      *
