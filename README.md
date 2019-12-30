@@ -110,6 +110,10 @@ composer test
 
 For any security related issues, send a mail to [peterchrjoergensen+shortcodes@gmail.com](mailto:peterchrjoergensen+shortcodes@gmail.com) instead of using the issue tracker.
 
+## Changelog
+
+See [CHANGELOG](CHANGELOG.md) for details on what has changed.
+
 ## Credits
 
 - [Peter Jørgensen](https://github.com/tehwave)
