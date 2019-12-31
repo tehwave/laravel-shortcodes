@@ -1,6 +1,6 @@
 # Laravel Shortcodes
 
-Simple, elegant WordPress-like Shortcodes the Laravel way
+Simple, elegant WordPress-like Shortcodes the Laravel way.
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![StyleCI](https://styleci.io/repos/229155772/shield)](https://styleci.io/repos/229155772)
@@ -8,6 +8,8 @@ Simple, elegant WordPress-like Shortcodes the Laravel way
 ![Build Status](https://github.com/tehwave/laravel-shortcodes/workflows/tests/badge.svg)
 
 ## Requirements
+
+The package has been developed and tested to work with the following minimum requirements:
 
 - Laravel 6.x
 - PHP 7.2
@@ -34,15 +36,19 @@ $compiledContent = Shortcode::compile('[uppercase]Laravel Shortcodes[/uppercase]
 
 ### Creating Shortcodes
 
+Run the following command to place a fresh `Shortcode` class in your new `app/Shortcodes` directory.
+
 ```bash
 php artisan make:shortcode ItalicizeText
 ```
 
-This command will place a fresh `Shortcode` class in your new `app/Shortcodes` directory.
+#### Output
 
 Each `Shortcode` class contains a `handle` method, that you may use to output into the compiling content.
 
-Within the `handle` method, you may access the ```attributes``` and ```body``` properties.
+Within the `handle` method, you may access the `attributes` and `body` properties.
+
+> **Note**: All values in the `attributes` array are casted to `string` type when parsed.
 
 ```php
 <?php
@@ -72,7 +78,13 @@ class ItalicizeText extends Shortcode
 }
 ```
 
-The shortcode's tag is derived from the class name to snake_case. You may specify a custom tag using the ```tag``` property or overwriting the ```getTag``` method.
+#### Naming
+
+The shortcode's tag is derived from the class name to snake_case.
+
+You may specify a custom tag using the `tag` property or by overwriting the `getTag` method.
+
+Shortcode tags must be alpha-numeric characters and may include underscores.
 
 ```php
 <?php
@@ -94,6 +106,8 @@ class ItalicizeText extends Shortcode
 
 ### Compiling Shortcodes
 
+Run a string through the compiler to parse all shortcodes.
+
 ```php
 use tehwave\Shortcodes\Shortcode;
 
@@ -102,7 +116,23 @@ $compiledContent = Shortcode::compile('[italics escape_html="true"]<b>Hello Worl
 // <i>&lt;b&gt;Hello World&lt;/b&gt;</i>
 ```
 
+You may specify a list of instantiated `Shortcode` classes to limit what shortcodes are parsed.
+
+```php
+use tehwave\Shortcodes\Shortcode;
+
+$shortcodes = collect([
+    new ItalicizeText,
+]);
+
+$compiledContent = Shortcode::compile('[uppercase]Hello World[/uppercase]', $shortcodes);
+
+// [uppercase]Hello World[/uppercase]
+```
+
 ## Tests
+
+Run the following command to test the package.
 
 ```bash
 composer test
@@ -115,6 +145,10 @@ For any security related issues, send a mail to [peterchrjoergensen+shortcodes@g
 ## Changelog
 
 See [CHANGELOG](CHANGELOG.md) for details on what has changed.
+
+## Contributions
+
+See [CONTRIBUTING](CONTRIBUTING.md) for details on how to contribute.
 
 ## Credits
 
