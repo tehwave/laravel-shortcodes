@@ -16,7 +16,7 @@ class DummyClass extends Shortcode
      */
     public function handle(): ?string
     {
-        // this->attributes
-        // this->body
+        // $this->attributes
+        // $this->body
     }
 }
