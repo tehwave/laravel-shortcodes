@@ -143,7 +143,7 @@ Unfortunately, this escapes the attribute syntax with double quotes, but singula
 Let's take a look at the following content with some basic `Row`, `Column`and `Image` shortcodes.
 
 ```
-# Controls
+# Controls:
 
 [row]
     [column]
@@ -172,6 +172,8 @@ $compiledDescription = Shortcode::compile($parsedDescription);
 We can expect to see the following output:
 
 ```html
+<h1>Controls:</h1>
+<p></p>
 <div class="container-fluid">
     <div class="row">
         <div class="col">
