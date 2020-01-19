@@ -24,7 +24,7 @@ class Compiler
      * Parse content by matching up against shortcodes
      * and dispatching them to handle the input.
      *
-     * @param  string    $content
+     * @param  string                        $content
      * @param  \tehwave\Shortcodes\Shortcode $shortcode
      *
      * @return string
@@ -46,6 +46,8 @@ class Compiler
      * Retrieve the regular expression used to match shortcodes. Thanks Wordpress!
      *
      * @link https://developer.wordpress.org/reference/functions/get_shortcode_regex/
+     *
+     * @param  string $tag
      *
      * @return string
      */
