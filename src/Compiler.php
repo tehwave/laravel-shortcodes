@@ -94,7 +94,7 @@ class Compiler
      *
      * @return array|null
      */
-    public static function resolveAttributes($attributesText): ?array
+    public static function resolveAttributes(string $attributesText): ?array
     {
         $attributesText = preg_replace("/[\x{00a0}\x{200b}]+/u", ' ', $attributesText);
 
