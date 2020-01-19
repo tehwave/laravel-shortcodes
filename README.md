@@ -130,6 +130,65 @@ $compiledContent = Shortcode::compile('[uppercase]Hello World[/uppercase]', $sho
 // [uppercase]Hello World[/uppercase]
 ```
 
+### Example
+
+I developed `Laravel Shortcodes` for use with user provided content on [gm48.net](https://gm48.net).
+
+The content is parsed using a Markdown converter called Parsedown, and because users can't be trusted, the content has to be escaped.
+
+Unfortunately, this escapes the attribute syntax with double quotes, but singular quotes can still be used as well as just omitting any quotes.
+
+> Note: Quotes are required for any attribute values that contain whitespace.
+
+Let's take a look at the following content with some basic `Row`, `Column`and `Image` shortcodes.
+
+```
+# Controls
+
+[row]
+    [column]
+        [image align=left src=http://i.imgur.com/6CNoFYx.png alt='Move player character']
+    [/column]
+    [column]
+        [image align=center src=http://i.imgur.com/8nwaVo0.png alt=Jump]
+    [/column]
+    [column]
+        [image align=right src=http://i.imgur.com/QsbkkuZ.png alt='Go down through platforms']
+    [/column]
+[/row]
+```
+
+When running the content through the following code:
+
+```php
+$parsedDescription = (new Parsedown())
+    ->setSafeMode(true)
+    ->setUrlsLinked(false)
+    ->text($this->description);
+
+$compiledDescription = Shortcode::compile($parsedDescription);
+```
+
+We can expect to see the following output:
+
+```html
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <img src="http://i.imgur.com/6CNoFYx.png" class="mr-auto" alt="Move player character">
+        </div>
+        <div class="col">
+            <img src="http://i.imgur.com/8nwaVo0.png" class="mx-auto" alt="Jump">
+        </div>
+        <div class="col">
+            <img src="http://i.imgur.com/QsbkkuZ.png" class="ml-auto" alt="Go down through platforms">
+        </div>
+    </div>
+</div>
+```
+
+You should still escape any user input within your shortcodes' `handle`.
+
 ## Tests
 
 Run the following command to test the package.
