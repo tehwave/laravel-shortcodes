@@ -11,7 +11,7 @@ Simple, elegant WordPress-like Shortcodes the Laravel way.
 
 The package has been developed and tested to work with the following minimum requirements:
 
-- Laravel 6.x
+- Laravel 6
 - PHP 7.2
 
 ## Installation
