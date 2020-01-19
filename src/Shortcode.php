@@ -191,7 +191,8 @@ abstract class Shortcode
     /**
      * A shorthand method for compile method on Compiler.
      *
-     * @param  string $content
+     * @param  string                              $content
+     * @param  \Illuminate\Support\Collection|null $shortcodes
      *
      * @return string
      */

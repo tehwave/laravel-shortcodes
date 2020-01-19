@@ -9,7 +9,8 @@ class Compiler
     /**
      * Compile content with shortcodes.
      *
-     * @param  string $content
+     * @param  string                              $content
+     * @param  \Illuminate\Support\Collection|null $shortcodes
      *
      * @return string
      */
