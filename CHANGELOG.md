@@ -2,7 +2,9 @@
 
 Any notable changes to `Laravel Shortcodes` will be documented in this file.
 
-## Unreleased
+## v1.1.0 (07-03-2020)
+
+- Add support for `Laravel 7`
 
 ## v1.0.1 (19-01-2020)
 
