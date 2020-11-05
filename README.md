@@ -1,3 +1,5 @@
+![](https://banners.beyondco.de/Laravel%20Shortcodes.png?theme=light&packageName=tehwave%2Flaravel-shortcodes&pattern=wiggle&style=style_1&description=Simple%2C+elegant+WordPress-like+Shortcodes+the+Laravel+way.&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
+
 # Laravel Shortcodes
 
 Simple, elegant WordPress-like Shortcodes the Laravel way.
