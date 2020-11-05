@@ -2,6 +2,11 @@
 
 Any notable changes to `Laravel Shortcodes` will be documented in this file.
 
+## v1.2.0 (05-11-2020)
+
+- Add support for `Laravel 8`
+- Add support for `PHP 8`
+
 ## v1.1.0 (07-03-2020)
 
 - Add support for `Laravel 7`
