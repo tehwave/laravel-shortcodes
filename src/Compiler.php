@@ -9,9 +9,8 @@ class Compiler
     /**
      * Compile content with shortcodes.
      *
-     * @param  string                              $content
-     * @param  \Illuminate\Support\Collection|null $shortcodes
-     *
+     * @param  string  $content
+     * @param  \Illuminate\Support\Collection|null  $shortcodes
      * @return string
      */
     public static function compile(string $content, Collection $shortcodes = null): string
@@ -24,9 +23,8 @@ class Compiler
      * Parse content by matching up against shortcodes
      * and dispatching them to handle the input.
      *
-     * @param  string                        $content
-     * @param  \tehwave\Shortcodes\Shortcode $shortcode
-     *
+     * @param  string  $content
+     * @param  \tehwave\Shortcodes\Shortcode  $shortcode
      * @return string
      */
     public static function parse(string $content, $shortcode): string
@@ -47,8 +45,7 @@ class Compiler
      *
      * @link https://developer.wordpress.org/reference/functions/get_shortcode_regex/
      *
-     * @param  string $tag
-     *
+     * @param  string  $tag
      * @return string
      */
     protected static function shortcodeRegex(string $tag): string
@@ -90,8 +87,7 @@ class Compiler
      *
      * @link https://developer.wordpress.org/reference/functions/shortcode_parse_atts/
      *
-     * @param  string $attributesText
-     *
+     * @param  string  $attributesText
      * @return array|null
      */
     public static function resolveAttributes(string $attributesText): ?array
