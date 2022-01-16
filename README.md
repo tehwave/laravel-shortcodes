@@ -16,6 +16,8 @@ The package has been developed and tested to work with the following minimum req
 - Laravel 6
 - PHP 7.2
 
+> Tests are failing due to missing compatibility with PHP 8.1 as the required packages have not been made compatible by their authors yet.
+
 ## Installation
 
 Install the package via Composer.
