@@ -45,8 +45,8 @@ abstract class Shortcode
     /**
      * Create a new Shortcode instance.
      *
-     * @param array|null       $attributes
-     * @param string|null      $body
+     * @param  array|null  $attributes
+     * @param  string|null  $body
      */
     public function __construct(array $attributes = null, string $body = null)
     {
@@ -90,7 +90,6 @@ abstract class Shortcode
      * This method runs when the shortcode has been parsed from content.
      *
      * @param  array  $matches
-     *
      * @return string|null
      */
     public function dispatch(array $matches): ?string
@@ -191,9 +190,8 @@ abstract class Shortcode
     /**
      * A shorthand method for compile method on Compiler.
      *
-     * @param  string                              $content
-     * @param  \Illuminate\Support\Collection|null $shortcodes
-     *
+     * @param  string  $content
+     * @param  \Illuminate\Support\Collection|null  $shortcodes
      * @return string
      */
     public static function compile(string $content, Collection $shortcodes = null): string
