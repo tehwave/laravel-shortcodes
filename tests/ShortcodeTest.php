@@ -5,6 +5,12 @@ namespace tehwave\Shortcodes\Tests;
 use Illuminate\Support\Collection;
 use tehwave\Shortcodes\Compiler;
 use tehwave\Shortcodes\Shortcode;
+use Illuminate\Support\Facades\Date;
+use tehwave\Shortcodes\Tests\Shortcodes\CastDate;
+use tehwave\Shortcodes\Tests\Shortcodes\CastFloat;
+use tehwave\Shortcodes\Tests\Shortcodes\OutputBody;
+use tehwave\Shortcodes\Tests\Shortcodes\CastBoolean;
+use tehwave\Shortcodes\Tests\Shortcodes\CastInteger;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputAttributes;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputBody;
 
@@ -27,6 +33,10 @@ class ShortcodeTest extends TestCase
         $this->shortcodes = collect([
             new OutputBody,
             new OutputAttributes,
+            new CastBoolean,
+            new CastDate,
+            new CastFloat,
+            new CastInteger,
         ]);
     }
 
@@ -210,5 +220,34 @@ class ShortcodeTest extends TestCase
         $compiledContent = Shortcode::compile($content);
 
         $this->assertSame($content, $compiledContent);
+    }
+    
+    /**
+     * Test the various castings for attributes.
+     *
+     * @link https://unit-tests.svn.wordpress.org/trunk/tests/shortcode.php
+     *
+     * @return void
+     */
+    public function testShortcodeAttributesCasting(): void
+    {
+        collect([
+            '[cast_boolean test-boolean]' => 'true',
+            '[cast_boolean test-boolean="1"]' => 'true',
+            '[cast_boolean test-boolean="0"]' => 'false',
+            '[cast_boolean /]' => 'false',
+            '[cast_date test-date="2023-06-29"]' => (string) Date::parse('2023-06-29')->timestamp,
+            '[cast_date test-date="2020-01-01"]' => (string) Date::parse('2020-01-01')->timestamp,
+            '[cast_integer test-int="3"]' => '6',
+            '[cast_integer test-int="35460"]' => '70920',
+            '[cast_float test-float="5.67"]' => '15.67',
+            '[cast_float test-float="15.011"]' => '25.011',
+        ])->each(function ($output, $tag) {
+            $compiledContent = Compiler::compile($tag, $this->shortcodes);
+
+            $expected = $output;
+
+            $this->assertSame($expected, $compiledContent);
+        });
     }
 }
