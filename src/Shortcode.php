@@ -4,9 +4,12 @@ namespace tehwave\Shortcodes;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 
 abstract class Shortcode
 {
+    use HasAttributes;
+
     /**
      * The cache of a list of Shortcode classes.
      *
@@ -29,13 +32,6 @@ abstract class Shortcode
     protected $tag;
 
     /**
-     * The shortcode's attributes.
-     *
-     * @var array|null
-     */
-    protected $attributes = null;
-
-    /**
      * The shortcode's body content.
      *
      * @var string
@@ -48,7 +44,7 @@ abstract class Shortcode
      * @param  array|null  $attributes
      * @param  string|null  $body
      */
-    public function __construct(array $attributes = null, string $body = null)
+    public function __construct(array $attributes = [], string $body = null)
     {
         $this->attributes = $attributes;
 
@@ -103,11 +99,54 @@ abstract class Shortcode
         }
 
         // Set up our inputs and run our handle.
-        $this->attributes = Compiler::resolveAttributes($attributes);
+        $this->attributes = $this->setAttributeDefaults(
+            Compiler::resolveAttributes($attributes)
+        );
 
         $this->body = $body;
 
         return $this->handle();
+    }
+
+    /**
+     * Set defaults for attributes without a value that should be cast to boolean.
+     * e.g. [shortcode boolean-attribute string="value"]
+     *
+     * @return void
+     */
+    protected function setAttributeDefaults($attributes)
+    {
+        $attributes = [
+            ...$this->getCastAttributeDefaults(),
+            ...collect($attributes ?? [])
+                ->mapWithKeys(function ($value, $key) {
+                    if (array_key_exists($value, $this->casts) && in_array($this->casts[$value], ['boolean', 'bool'])) {
+                        return [$value => true];
+                    }
+
+                    return [$key => $value];
+                })
+                ->toArray()
+        ];
+        
+        return empty($attributes)? null : $attributes;
+    }
+
+    /**
+     * Retrieve the default values for attributes that should be cast to boolean.
+     *
+     * @return array
+     */
+    public function getCastAttributeDefaults(): array
+    {
+        return collect($this->casts)
+            ->filter(function($value){
+                return in_array($value, ['boolean', 'bool']);
+            })
+            ->map(function(){
+                return false;
+            })
+            ->toArray();
     }
 
     /**
@@ -197,5 +236,63 @@ abstract class Shortcode
     public static function compile(string $content, Collection $shortcodes = null): string
     {
         return Compiler::compile($content, $shortcodes);
+    }
+
+    /**
+     * Get the attributes that should be converted to dates.
+     *
+     * @return array
+     */
+    public function getDates()
+    {
+        return [];
+    }
+
+    /**
+     * Get the casts array.
+     *
+     * @return array
+     */
+    public function getCasts()
+    {
+        return $this->casts;
+    }
+
+    /**
+     * Get an attribute from the model.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function getAttribute($key)
+    {
+        if (! $key) {
+            return;
+        }
+
+        $key = $key === Str::camel($key) && !array_key_exists($key, $this->casts)
+            ? Str::snake($key, '-')
+            : $key;
+
+        // If the attribute exists in the attribute array or has a "get" mutator we will
+        // get the attribute's value
+        if (array_key_exists($key, $this->attributes ?? []) ||
+            array_key_exists($key, $this->casts) ||
+            $this->hasGetMutator($key)) {
+            return $this->getAttributeValue($key);
+        }
+
+        return null;
+    }
+
+    /**
+     * Dynamically retrieve attributes on the class.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->getAttribute($key);
     }
 }
