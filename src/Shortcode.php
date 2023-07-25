@@ -32,6 +32,13 @@ abstract class Shortcode
     protected $tag;
 
     /**
+     * Optional closing tag to match in content.
+     *
+     * @var string
+     */
+    protected $closingTag;
+
+    /**
      * The shortcode's body content.
      *
      * @var string
@@ -259,7 +266,7 @@ abstract class Shortcode
     }
 
     /**
-     * Get an attribute from the model.
+     * Get an attribute from the class.
      *
      * @param  string  $key
      * @return mixed
