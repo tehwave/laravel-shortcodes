@@ -233,7 +233,9 @@ class ShortcodeTest extends TestCase
     {
         collect([
             '[cast_boolean test-boolean]' => 'true',
+            // '[cast_boolean test-boolean="true"]' => 'true',
             '[cast_boolean test-boolean="1"]' => 'true',
+            // '[cast_boolean test-boolean="false"]' => 'false',
             '[cast_boolean test-boolean="0"]' => 'false',
             '[cast_boolean /]' => 'false',
             '[cast_date test-date="2023-06-29"]' => (string) Date::parse('2023-06-29')->timestamp,
