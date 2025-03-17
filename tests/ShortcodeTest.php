@@ -2,10 +2,11 @@
 
 namespace tehwave\Shortcodes\Tests;
 
+use Illuminate\Support\Collection;
 use tehwave\Shortcodes\Compiler;
 use tehwave\Shortcodes\Shortcode;
-use tehwave\Shortcodes\Tests\Shortcodes\OutputBody;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputAttributes;
+use tehwave\Shortcodes\Tests\Shortcodes\OutputBody;
 
 class ShortcodeTest extends TestCase
 {
@@ -18,8 +19,6 @@ class ShortcodeTest extends TestCase
 
     /**
      * Setup the test environment.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
@@ -33,10 +32,8 @@ class ShortcodeTest extends TestCase
 
     /**
      * Test that non-existing shortcodes are not being compiled.
-     *
-     * @return void
      */
-    public function testShortcodeNotIsCompiled(): void
+    public function test_shortcode_not_is_compiled(): void
     {
         if (file_exists($path = $this->app->path('Shortcodes').'/HelloWorld.php')) {
             unlink($path);
@@ -53,10 +50,8 @@ class ShortcodeTest extends TestCase
 
     /**
      * Test that shortcode syntax can be escaped.
-     *
-     * @return void
      */
-    public function testShortcodeIsEscaped(): void
+    public function test_shortcode_is_escaped(): void
     {
         $compiledContent = Compiler::compile('[[output_body]]', $this->shortcodes);
 
@@ -65,10 +60,8 @@ class ShortcodeTest extends TestCase
 
     /**
      * Test that shortcode syntax can be escaped.
-     *
-     * @return void
      */
-    public function testShortcodeBodyIsParsed(): void
+    public function test_shortcode_body_is_parsed(): void
     {
         $compiledContent = Compiler::compile('[output_body]Hello World[/output_body]', $this->shortcodes);
 
@@ -77,10 +70,8 @@ class ShortcodeTest extends TestCase
 
     /**
      * Test that no attributes are being parsed.
-     *
-     * @return void
      */
-    public function testShortcodeAttributesIsNotParsed(): void
+    public function test_shortcode_attributes_is_not_parsed(): void
     {
         $compiledContent = Compiler::compile('[output_attributes]', $this->shortcodes);
 
@@ -91,10 +82,8 @@ class ShortcodeTest extends TestCase
 
     /**
      * Test that any unclosed HTML tags are being rejected from attributes.
-     *
-     * @return void
      */
-    public function testShortcodeAttributesRejectUnclosedHtmlTags(): void
+    public function test_shortcode_attributes_reject_unclosed_html_tags(): void
     {
         $compiledContent = Compiler::compile('[output_attributes html="<h1>Hello World<"]', $this->shortcodes);
 
@@ -107,10 +96,8 @@ class ShortcodeTest extends TestCase
      * Test the various syntaxes for attributes.
      *
      * @link https://unit-tests.svn.wordpress.org/trunk/tests/shortcode.php
-     *
-     * @return void
      */
-    public function testShortcodeAttributesSyntaxes(): void
+    public function test_shortcode_attributes_syntaxes(): void
     {
         collect([
             '[output_attributes /]' => '',
