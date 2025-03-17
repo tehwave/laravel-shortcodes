@@ -122,4 +122,104 @@ class ShortcodeTest extends TestCase
             $this->assertSame($expected, $compiledContent);
         });
     }
+
+    /**
+     * Test that the getTag method returns the correct tag.
+     */
+    public function test_get_tag(): void
+    {
+        $shortcode = new OutputBody;
+        $this->assertSame('output_body', $shortcode->getTag());
+
+        $shortcode = new OutputAttributes;
+        $this->assertSame('output_attributes', $shortcode->getTag());
+    }
+
+    /**
+     * Test that the dispatch method correctly handles shortcodes.
+     */
+    public function test_dispatch(): void
+    {
+        $shortcode = new class extends Shortcode
+        {
+            public function handle(): ?string
+            {
+                return 'Handled Content';
+            }
+        };
+
+        $matches = [
+            '[example]', // shortcode
+            '', // prefix
+            'example', // tag
+            '', // attributes
+            '', // tagClose
+            '', // body
+            '', // suffix
+        ];
+
+        $this->assertSame('Handled Content', $shortcode->dispatch($matches));
+    }
+
+    /**
+     * Test that the getClasses method returns the correct classes.
+     */
+    public function test_get_classes(): void
+    {
+        $classes = Shortcode::getClasses();
+
+        $this->assertInstanceOf(Collection::class, $classes);
+    }
+
+    /**
+     * Test that the getNamespacedClasses method returns the correct namespaced classes.
+     */
+    public function test_get_namespaced_classes(): void
+    {
+        $namespacedClasses = Shortcode::getNamespacedClasses();
+
+        $this->assertInstanceOf(Collection::class, $namespacedClasses);
+    }
+
+    /**
+     * Test that the getInstantiatedClasses method returns the correct instances.
+     */
+    public function test_get_instantiated_classes(): void
+    {
+        $instances = Shortcode::getInstantiatedClasses();
+
+        $this->assertInstanceOf(Collection::class, $instances);
+    }
+
+    /**
+     * Test that the clearCache method clears the cache.
+     */
+    public function test_clear_cache(): void
+    {
+        Shortcode::clearCache();
+
+        $this->assertNull(Shortcode::getClassesCache());
+        $this->assertNull(Shortcode::getNamespacedClassesCache());
+    }
+
+    /**
+     * Test that the all method returns all instantiated classes.
+     */
+    public function test_all(): void
+    {
+        $all = Shortcode::all();
+
+        $this->assertInstanceOf(Collection::class, $all);
+    }
+
+    /**
+     * Test that the compile method compiles content correctly.
+     */
+    public function test_compile(): void
+    {
+        $content = '[example]';
+        $compiledContent = Shortcode::compile($content);
+
+        $this->assertSame($content, $compiledContent);
+    }
 }
