@@ -2,22 +2,22 @@
 
 namespace tehwave\Shortcodes;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 abstract class Shortcode
 {
     /**
      * The cache of a list of Shortcode classes.
      *
-     * @return \Illuminate\Support\Collection
+     * @var Collection|null
      */
     protected static $classesCache;
 
     /**
      * The cache of a list of namespaced Shortcode classes.
      *
-     * @return \Illuminate\Support\Collection
+     * @var Collection|null
      */
     protected static $namespacedClassesCache;
 
@@ -44,11 +44,8 @@ abstract class Shortcode
 
     /**
      * Create a new Shortcode instance.
-     *
-     * @param  array|null  $attributes
-     * @param  string|null  $body
      */
-    public function __construct(array $attributes = null, string $body = null)
+    public function __construct(?array $attributes = null, ?string $body = null)
     {
         $this->attributes = $attributes;
 
@@ -60,8 +57,6 @@ abstract class Shortcode
      *
      * Should the tag not be pre-defined, we will resolve
      * the tag from the class name into snake_case.
-     *
-     * @return string
      */
     public function getTag(): string
     {
@@ -81,16 +76,11 @@ abstract class Shortcode
      *
      * You may return a string from here, that will then
      * be inserted into the content being compiled.
-     *
-     * @return string|null
      */
     abstract public function handle(): ?string;
 
     /**
      * This method runs when the shortcode has been parsed from content.
-     *
-     * @param  array  $matches
-     * @return string|null
      */
     public function dispatch(array $matches): ?string
     {
@@ -112,8 +102,6 @@ abstract class Shortcode
 
     /**
      * Retrieve all of the Shortcode classes.
-     *
-     * @return \Illuminate\Support\Collection
      */
     public static function getClasses(): Collection
     {
@@ -132,8 +120,6 @@ abstract class Shortcode
 
     /**
      * Retrieve all of the Shortcode classes in namespace.
-     *
-     * @return \Illuminate\Support\Collection
      */
     public static function getNamespacedClasses(): Collection
     {
@@ -155,8 +141,6 @@ abstract class Shortcode
 
     /**
      * Retrieve all of the Shortcode classes as instances.
-     *
-     * @return \Illuminate\Support\Collection
      */
     public static function getInstantiatedClasses(): Collection
     {
@@ -168,8 +152,6 @@ abstract class Shortcode
 
     /**
      * Clears the classes cache.
-     *
-     * @return void
      */
     public static function clearCache(): void
     {
@@ -179,8 +161,6 @@ abstract class Shortcode
 
     /**
      * A shorthand method for getNamespacedClasses.
-     *
-     * @return \Illuminate\Support\Collection
      */
     public static function all(): Collection
     {
@@ -189,12 +169,8 @@ abstract class Shortcode
 
     /**
      * A shorthand method for compile method on Compiler.
-     *
-     * @param  string  $content
-     * @param  \Illuminate\Support\Collection|null  $shortcodes
-     * @return string
      */
-    public static function compile(string $content, Collection $shortcodes = null): string
+    public static function compile(string $content, ?Collection $shortcodes = null): string
     {
         return Compiler::compile($content, $shortcodes);
     }
