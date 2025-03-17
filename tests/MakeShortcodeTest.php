@@ -6,8 +6,6 @@ class MakeShortcodeTest extends TestCase
 {
     /**
      * Setup the test environment.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
@@ -20,10 +18,8 @@ class MakeShortcodeTest extends TestCase
 
     /**
      * Test the console command.
-     *
-     * @return void
      */
-    public function testCommandMakesFile(): void
+    public function test_command_makes_file(): void
     {
         $this->artisan('make:shortcode', ['name' => 'HelloWorld'])->assertExitCode(0);
 
