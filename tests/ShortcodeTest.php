@@ -194,7 +194,7 @@ class ShortcodeTest extends TestCase
     /**
      * Test that the all method returns all instantiated classes.
      */
-    public function test_all(): void
+    public function testAll(): void
     {
         $all = Shortcode::all();
 
