@@ -9,10 +9,10 @@ Simple, elegant WordPress-like Shortcodes the Laravel way.
 
 ## Requirements
 
-The package has been developed and tested to work with the latest versions of PHP and Laravel as well as the following minimum requirements:
+The package has been developed and tested to work with the latest supported versions of PHP and Laravel as well as the following minimum requirements:
 
-- Laravel 6
-- PHP 7.2
+- Laravel 11
+- PHP 8.2
 
 ## Installation
 
