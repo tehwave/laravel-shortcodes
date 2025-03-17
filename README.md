@@ -5,7 +5,6 @@
 Simple, elegant WordPress-like Shortcodes the Laravel way.
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![StyleCI](https://styleci.io/repos/229155772/shield)](https://styleci.io/repos/229155772)
 ![Build Status](https://github.com/tehwave/laravel-shortcodes/workflows/tests/badge.svg)
 
 ## Requirements
