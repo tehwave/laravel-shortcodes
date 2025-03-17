@@ -150,16 +150,6 @@ abstract class Shortcode
             });
     }
 
-    public static function getClassesCache(): ?Collection
-    {
-        return static::$classesCache;
-    }
-
-    public static function getNamespacedClassesCache(): ?Collection
-    {
-        return static::$namespacedClassesCache;
-    }
-
     /**
      * Clears the classes cache.
      */

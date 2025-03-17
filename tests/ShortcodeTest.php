@@ -192,17 +192,6 @@ class ShortcodeTest extends TestCase
     }
 
     /**
-     * Test that the clearCache method clears the cache.
-     */
-    public function test_clear_cache(): void
-    {
-        Shortcode::clearCache();
-
-        $this->assertNull(Shortcode::getClassesCache());
-        $this->assertNull(Shortcode::getNamespacedClassesCache());
-    }
-
-    /**
      * Test that the all method returns all instantiated classes.
      */
     public function test_all(): void
