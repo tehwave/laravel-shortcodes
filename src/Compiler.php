@@ -81,9 +81,9 @@ class Compiler
     public static function resolveAttributes(string $attributesText): ?array
     {
         $attributesText = preg_replace("/[\x{00a0}\x{200b}]+/u", ' ', $attributesText);
-        
+
         $attributes = collect([]);
-        
+
         if (preg_match_all(static::attributeRegex(), $attributesText, $matches, PREG_SET_ORDER)) {
             foreach ($matches as $match) {
                 if (! empty($match[1])) {
@@ -100,13 +100,13 @@ class Compiler
                     $attributes[] = stripcslashes($match[9]);
                 }
             }
-            
+
             // Reject any unclosed HTML elements.
             $filteredAttributes = $attributes->filter(function ($attribute) {
                 if (strpos($attribute, '<') === false) {
                     return true;
                 }
-                
+
                 return preg_match('/^[^<]*+(?:<[^>]*+>[^<]*+)*+$/', $attribute);
             });
 

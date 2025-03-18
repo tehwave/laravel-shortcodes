@@ -15,8 +15,6 @@ class CastDate extends Shortcode
      *
      * You may return a string from here, that will then
      * be inserted into the content being compiled.
-     *
-     * @return string|null
      */
     public function handle(): ?string
     {

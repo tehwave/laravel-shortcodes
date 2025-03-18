@@ -2,9 +2,9 @@
 
 namespace tehwave\Shortcodes;
 
+use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 
 abstract class Shortcode
 {
@@ -123,24 +123,22 @@ abstract class Shortcode
 
                     return [$key => $value];
                 })
-                ->toArray()
+                ->toArray(),
         ];
-        
-        return empty($attributes)? null : $attributes;
+
+        return empty($attributes) ? null : $attributes;
     }
 
     /**
      * Retrieve the default values for attributes that should be cast to boolean.
-     *
-     * @return array
      */
     public function getCastAttributeDefaults(): array
     {
         return collect($this->casts)
-            ->filter(function($value){
+            ->filter(function ($value) {
                 return in_array($value, ['boolean', 'bool']);
             })
-            ->map(function(){
+            ->map(function () {
                 return false;
             })
             ->toArray();
@@ -253,7 +251,7 @@ abstract class Shortcode
             return;
         }
 
-        $key = $key === Str::camel($key) && !array_key_exists($key, $this->casts)
+        $key = $key === Str::camel($key) && ! array_key_exists($key, $this->casts)
             ? Str::snake($key, '-')
             : $key;
 

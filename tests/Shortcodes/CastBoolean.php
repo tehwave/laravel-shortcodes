@@ -15,11 +15,9 @@ class CastBoolean extends Shortcode
      *
      * You may return a string from here, that will then
      * be inserted into the content being compiled.
-     *
-     * @return string|null
      */
     public function handle(): ?string
     {
-        return $this->testBoolean? 'true' : 'false';
+        return $this->testBoolean ? 'true' : 'false';
     }
 }

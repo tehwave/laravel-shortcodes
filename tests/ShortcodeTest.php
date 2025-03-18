@@ -3,13 +3,12 @@
 namespace tehwave\Shortcodes\Tests;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 use tehwave\Shortcodes\Compiler;
 use tehwave\Shortcodes\Shortcode;
-use Illuminate\Support\Facades\Date;
+use tehwave\Shortcodes\Tests\Shortcodes\CastBoolean;
 use tehwave\Shortcodes\Tests\Shortcodes\CastDate;
 use tehwave\Shortcodes\Tests\Shortcodes\CastFloat;
-use tehwave\Shortcodes\Tests\Shortcodes\OutputBody;
-use tehwave\Shortcodes\Tests\Shortcodes\CastBoolean;
 use tehwave\Shortcodes\Tests\Shortcodes\CastInteger;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputAttributes;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputBody;
@@ -221,15 +220,13 @@ class ShortcodeTest extends TestCase
 
         $this->assertSame($content, $compiledContent);
     }
-    
+
     /**
      * Test the various castings for attributes.
      *
      * @link https://unit-tests.svn.wordpress.org/trunk/tests/shortcode.php
-     *
-     * @return void
      */
-    public function testShortcodeAttributesCasting(): void
+    public function test_shortcode_attributes_casting(): void
     {
         collect([
             '[cast_boolean test-boolean]' => 'true',

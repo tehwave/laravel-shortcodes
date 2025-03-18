@@ -15,11 +15,9 @@ class CastInteger extends Shortcode
      *
      * You may return a string from here, that will then
      * be inserted into the content being compiled.
-     *
-     * @return string|null
      */
     public function handle(): ?string
     {
-        return (string)($this->testInt * 2);
+        return (string) ($this->testInt * 2);
     }
 }
