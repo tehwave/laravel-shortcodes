@@ -14,6 +14,13 @@ The package has been developed and tested to work with the latest supported vers
 - Laravel 11
 - PHP 8.2
 
+### Version Compatibility
+
+| Laravel | PHP | Branch |
+|---|---|---|
+|  11+ | 8.2+ | [master](https://github.com/tehwave/laravel-shortcodes/tree/master) |
+|  10 and below | 8.1 and below | [1.x](https://github.com/tehwave/laravel-shortcodes/tree/1.x) |
+
 ## Installation
 
 Install the package via Composer.
