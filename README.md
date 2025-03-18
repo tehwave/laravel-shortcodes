@@ -55,7 +55,8 @@ Each `Shortcode` class contains a `handle` method, that you may use to output in
 
 Within the `handle` method, you may access the `attributes` and `body` properties.
 
-> **Note**: All values in the `attributes` array are casted to `string` type when parsed.
+> [!NOTE]  
+> All values in the `attributes` array are cast to `string` type when parsed.
 
 ```php
 <?php
@@ -145,7 +146,8 @@ The content is parsed using a Markdown converter called Parsedown, and because u
 
 Unfortunately, this escapes the attribute syntax with double quotes, but singular quotes can still be used as well as just omitting any quotes.
 
-> Note: Quotes are required for any attribute values that contain whitespace.
+> [!NOTE]  
+> Quotes are required for any attribute values that contain whitespace.
 
 Let's take a look at the following content with some basic `Row`, `Column`and `Image` shortcodes.
 
