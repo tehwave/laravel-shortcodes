@@ -3,8 +3,13 @@
 namespace tehwave\Shortcodes\Tests;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 use tehwave\Shortcodes\Compiler;
 use tehwave\Shortcodes\Shortcode;
+use tehwave\Shortcodes\Tests\Shortcodes\CastBoolean;
+use tehwave\Shortcodes\Tests\Shortcodes\CastDate;
+use tehwave\Shortcodes\Tests\Shortcodes\CastFloat;
+use tehwave\Shortcodes\Tests\Shortcodes\CastInteger;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputAttributes;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputBody;
 
@@ -27,6 +32,10 @@ class ShortcodeTest extends TestCase
         $this->shortcodes = collect([
             new OutputBody,
             new OutputAttributes,
+            new CastBoolean,
+            new CastDate,
+            new CastFloat,
+            new CastInteger,
         ]);
     }
 
@@ -210,5 +219,30 @@ class ShortcodeTest extends TestCase
         $compiledContent = Shortcode::compile($content);
 
         $this->assertSame($content, $compiledContent);
+    }
+
+    /**
+     * Test the various castings for attributes.
+     *
+     * @link https://unit-tests.svn.wordpress.org/trunk/tests/shortcode.php
+     */
+    public function test_shortcode_attributes_casting(): void
+    {
+        collect([
+            '[cast_boolean testBoolean="1"]' => 'true',
+            '[cast_boolean testBoolean="0"]' => 'false',
+            '[cast_date testDate="2023-06-29"]' => (string) Date::parse('2023-06-29')->timestamp,
+            '[cast_date testDate="2020-01-01"]' => (string) Date::parse('2020-01-01')->timestamp,
+            '[cast_integer testInt="3"]' => '6',
+            '[cast_integer testInt="35460"]' => '70920',
+            '[cast_float testFloat="5.67"]' => '15.67',
+            '[cast_float testFloat="15.011"]' => '25.011',
+        ])->each(function (string $output, string $tag): void {
+            $compiledContent = Compiler::compile($tag, $this->shortcodes);
+
+            $expected = $output;
+
+            $this->assertSame($expected, $compiledContent);
+        });
     }
 }
