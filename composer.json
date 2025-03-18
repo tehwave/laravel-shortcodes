@@ -20,13 +20,15 @@
         }
     ],
     "require": {
-        "php": "^7.2.5|^8.0|^8.1",
-        "illuminate/console": "^6.0|^7.0|^8.0|^9.0|^10.0",
-        "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0"
+        "php": "^8.2",
+        "illuminate/console": "^11.0|^12.0",
+        "illuminate/support": "^11.0|^12.0"
     },
     "require-dev": {
-        "orchestra/testbench": "~3.8.0|^4.0|^5.0|^6.3|^7.0|^8.0",
-        "phpunit/phpunit": "^8.0|^9.0|^10.0"
+        "brianium/paratest": "^7.4",
+        "laravel/pint": "^1.21",
+        "orchestra/testbench": "^9.0|^10.0",
+        "phpunit/phpunit": "^10.5|^11.5.3"
     },
     "autoload": {
         "psr-4": {
@@ -42,7 +44,8 @@
         "test": "@php vendor/bin/phpunit",
         "coverage": "@php vendor/bin/phpunit --coverage-html coverage",
         "sniff": "@php vendor/bin/pint --test",
-        "lint": "@php vendor/bin/pint"
+        "lint": "@php vendor/bin/pint",
+        "paratest": "@php vendor/bin/paratest"
     },
     "extra": {
         "laravel": {
