@@ -7,7 +7,7 @@ use tehwave\Shortcodes\Shortcode;
 class CastBoolean extends Shortcode
 {
     protected $casts = [
-        'test-boolean' => 'boolean',
+        'testboolean' => 'boolean',
     ];
 
     /**

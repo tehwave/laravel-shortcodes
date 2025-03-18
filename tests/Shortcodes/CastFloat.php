@@ -7,7 +7,7 @@ use tehwave\Shortcodes\Shortcode;
 class CastFloat extends Shortcode
 {
     protected $casts = [
-        'test-float' => 'float',
+        'testFloat' => 'float',
     ];
 
     /**

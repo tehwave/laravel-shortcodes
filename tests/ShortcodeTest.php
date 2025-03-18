@@ -229,19 +229,15 @@ class ShortcodeTest extends TestCase
     public function test_shortcode_attributes_casting(): void
     {
         collect([
-            '[cast_boolean test-boolean]' => 'true',
-            // '[cast_boolean test-boolean="true"]' => 'true',
-            '[cast_boolean test-boolean="1"]' => 'true',
-            // '[cast_boolean test-boolean="false"]' => 'false',
-            '[cast_boolean test-boolean="0"]' => 'false',
-            '[cast_boolean /]' => 'false',
-            '[cast_date test-date="2023-06-29"]' => (string) Date::parse('2023-06-29')->timestamp,
-            '[cast_date test-date="2020-01-01"]' => (string) Date::parse('2020-01-01')->timestamp,
-            '[cast_integer test-int="3"]' => '6',
-            '[cast_integer test-int="35460"]' => '70920',
-            '[cast_float test-float="5.67"]' => '15.67',
-            '[cast_float test-float="15.011"]' => '25.011',
-        ])->each(function ($output, $tag) {
+            '[cast_boolean testBoolean="1"]' => 'true',
+            '[cast_boolean testBoolean="0"]' => 'false',
+            '[cast_date testDate="2023-06-29"]' => (string) Date::parse('2023-06-29')->timestamp,
+            '[cast_date testDate="2020-01-01"]' => (string) Date::parse('2020-01-01')->timestamp,
+            '[cast_integer testInt="3"]' => '6',
+            '[cast_integer testInt="35460"]' => '70920',
+            '[cast_float testFloat="5.67"]' => '15.67',
+            '[cast_float testFloat="15.011"]' => '25.011',
+        ])->each(function (string $output, string $tag): void {
             $compiledContent = Compiler::compile($tag, $this->shortcodes);
 
             $expected = $output;

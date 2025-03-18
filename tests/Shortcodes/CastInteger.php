@@ -7,7 +7,7 @@ use tehwave\Shortcodes\Shortcode;
 class CastInteger extends Shortcode
 {
     protected $casts = [
-        'test-int' => 'integer',
+        'testInt' => 'integer',
     ];
 
     /**

@@ -47,12 +47,14 @@ abstract class Shortcode
 
     /**
      * Create a new Shortcode instance.
+     *
+     * @param  array<string,mixed>  $attributes
      */
-    public function __construct(?array $attributes = null, ?string $body = null)
+    public function __construct(array $attributes = [], ?string $body = null)
     {
         $this->attributes = $attributes;
 
-        $this->body = $body;
+        $this->body = (string) $body;
     }
 
     /**
@@ -96,52 +98,19 @@ abstract class Shortcode
         }
 
         // Set up our inputs and run our handle.
-        $this->attributes = $this->setAttributeDefaults(
-            Compiler::resolveAttributes($attributes)
-        );
+        $this->attributes = Compiler::resolveAttributes($attributes);
+
+        foreach ((array) $this->attributes as $key => $value) {
+
+            // Cast the attribute if it has a cast.
+            if (is_string($key) && $this->hasCast($key)) {
+                $this->attributes[$key] = $this->castAttribute($key, $value);
+            }
+        }
 
         $this->body = $body;
 
         return $this->handle();
-    }
-
-    /**
-     * Set defaults for attributes without a value that should be cast to boolean.
-     * e.g. [shortcode boolean-attribute string="value"]
-     *
-     * @return void
-     */
-    protected function setAttributeDefaults($attributes)
-    {
-        $attributes = [
-            ...$this->getCastAttributeDefaults(),
-            ...collect($attributes ?? [])
-                ->mapWithKeys(function ($value, $key) {
-                    if (array_key_exists($value, $this->casts) && in_array($this->casts[$value], ['boolean', 'bool'])) {
-                        return [$value => true];
-                    }
-
-                    return [$key => $value];
-                })
-                ->toArray(),
-        ];
-
-        return empty($attributes) ? null : $attributes;
-    }
-
-    /**
-     * Retrieve the default values for attributes that should be cast to boolean.
-     */
-    public function getCastAttributeDefaults(): array
-    {
-        return collect($this->casts)
-            ->filter(function ($value) {
-                return in_array($value, ['boolean', 'bool']);
-            })
-            ->map(function () {
-                return false;
-            })
-            ->toArray();
     }
 
     /**
@@ -220,60 +189,46 @@ abstract class Shortcode
     }
 
     /**
-     * Get the attributes that should be converted to dates.
-     *
-     * @return array
-     */
-    public function getDates()
-    {
-        return [];
-    }
-
-    /**
-     * Get the casts array.
+     * Get the attributes that should be cast.
      *
      * @return array
      */
     public function getCasts()
     {
-        return $this->casts;
+        // Lowercase the keys because we normalize attribute keys when parsing from regex,
+        // and we need the cast keys to match with the attribute keys when casting.
+        return array_change_key_case($this->casts, CASE_LOWER);
     }
 
     /**
-     * Get an attribute from the class.
+     * Determine whether an attribute should be cast to a native type.
      *
      * @param  string  $key
-     * @return mixed
+     * @param  array|string|null  $types
+     * @return bool
      */
-    public function getAttribute($key)
+    public function hasCast($key, $types = null)
     {
-        if (! $key) {
-            return;
+        if (array_key_exists($key, $this->getCasts())) {
+            return $types ? in_array($this->getCastType($key), (array) $types, true) : true;
         }
 
-        $key = $key === Str::camel($key) && ! array_key_exists($key, $this->casts)
-            ? Str::snake($key, '-')
-            : $key;
-
-        // If the attribute exists in the attribute array or has a "get" mutator we will
-        // get the attribute's value
-        if (array_key_exists($key, $this->attributes ?? []) ||
-            array_key_exists($key, $this->casts) ||
-            $this->hasGetMutator($key)) {
-            return $this->getAttributeValue($key);
-        }
-
-        return null;
+        return false;
     }
-
+    
     /**
-     * Dynamically retrieve attributes on the class.
-     *
-     * @param  string  $key
-     * @return mixed
+     * Dynamically retrieve attributes on the shortcode.
      */
-    public function __get($key)
+    public function __get(string $key): mixed
     {
-        return $this->getAttribute($key);
+        // Key must be lowercase as this is how we store and normalize attributes.
+        if (isset($this->attributes[strtolower($key)])) {
+
+            // Any attributes with casts are already casted.
+            return $this->attributes[strtolower($key)];
+        }
+
+        // Not looking for an attribute.
+        return $this->{$key};
     }
 }

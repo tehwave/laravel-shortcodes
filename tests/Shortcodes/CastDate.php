@@ -7,7 +7,7 @@ use tehwave\Shortcodes\Shortcode;
 class CastDate extends Shortcode
 {
     protected $casts = [
-        'test-date' => 'date',
+        'testDate' => 'date',
     ];
 
     /**
