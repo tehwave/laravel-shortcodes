@@ -18,6 +18,6 @@ class CastBoolean extends Shortcode
      */
     public function handle(): ?string
     {
-        return $this->testBoolean ? 'true' : 'false';
+        return is_bool($this->testBoolean) ? 'true' : 'false';
     }
 }

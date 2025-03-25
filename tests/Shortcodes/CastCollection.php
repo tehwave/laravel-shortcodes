@@ -2,12 +2,13 @@
 
 namespace tehwave\Shortcodes\Tests\Shortcodes;
 
+use Illuminate\Support\Collection;
 use tehwave\Shortcodes\Shortcode;
 
-class CastFloat extends Shortcode
+class CastCollection extends Shortcode
 {
     protected $casts = [
-        'testFloat' => 'float',
+        'testCollection' => 'collection',
     ];
 
     /**
@@ -18,6 +19,6 @@ class CastFloat extends Shortcode
      */
     public function handle(): ?string
     {
-        return is_float($this->testFloat) ? 'true' : 'false';
+        return $this->testCollection instanceof Collection ? 'true' : 'false';
     }
 }

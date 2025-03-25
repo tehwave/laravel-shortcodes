@@ -4,10 +4,10 @@ namespace tehwave\Shortcodes\Tests\Shortcodes;
 
 use tehwave\Shortcodes\Shortcode;
 
-class CastFloat extends Shortcode
+class CastJson extends Shortcode
 {
     protected $casts = [
-        'testFloat' => 'float',
+        'testJson' => 'json',
     ];
 
     /**
@@ -18,6 +18,6 @@ class CastFloat extends Shortcode
      */
     public function handle(): ?string
     {
-        return is_float($this->testFloat) ? 'true' : 'false';
+        return is_array($this->testJson) ? 'true' : 'false';
     }
 }

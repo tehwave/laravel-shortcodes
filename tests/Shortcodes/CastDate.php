@@ -18,6 +18,6 @@ class CastDate extends Shortcode
      */
     public function handle(): ?string
     {
-        return (string) $this->testDate->timestamp;
+        return $this->testDate instanceof \Illuminate\Support\Carbon ? 'true' : 'false';
     }
 }

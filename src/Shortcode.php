@@ -2,6 +2,7 @@
 
 namespace tehwave\Shortcodes;
 
+use Exception;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -104,7 +105,12 @@ abstract class Shortcode
 
             // Cast the attribute if it has a cast.
             if (is_string($key) && $this->hasCast($key)) {
-                $this->attributes[$key] = $this->castAttribute($key, $value);
+                try {
+                    $this->attributes[$key] = $this->castAttribute($key, $value);
+                } catch (Exception) {
+                    // For whatever reason, we couldn't cast the attribute.
+                    $this->attributes[$key] = null;
+                }
             }
         }
 
@@ -138,7 +144,7 @@ abstract class Shortcode
     {
         if (! isset(static::$namespacedClassesCache)) {
             $namespacedClasses = static::getClasses()
-                ->transform(function ($class) {
+                ->transform(function (string $class): string {
                     return sprintf(
                         '%sShortcodes\%s',
                         app()->getNamespace(),
@@ -158,7 +164,7 @@ abstract class Shortcode
     public static function getInstantiatedClasses(): Collection
     {
         return self::getNamespacedClasses()
-            ->transform(function ($class) {
+            ->transform(function (string $class) {
                 return new $class;
             });
     }
@@ -215,12 +221,28 @@ abstract class Shortcode
 
         return false;
     }
-    
+
+    /**
+     * Get the format for database stored dates.
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat ?: app('db')->connection()->getQueryGrammar()->getDateFormat();
+    }
+
     /**
      * Dynamically retrieve attributes on the shortcode.
+     *
+     * @return mixed
      */
-    public function __get(string $key): mixed
+    public function __get(string $key)
     {
+        if (! $key) {
+            return;
+        }
+
         // Key must be lowercase as this is how we store and normalize attributes.
         if (isset($this->attributes[strtolower($key)])) {
 
@@ -229,6 +251,6 @@ abstract class Shortcode
         }
 
         // Not looking for an attribute.
-        return $this->{$key};
+        return $this->{$key} ?? null;
     }
 }

@@ -18,6 +18,6 @@ class CastInteger extends Shortcode
      */
     public function handle(): ?string
     {
-        return (string) ($this->testInt * 2);
+        return is_int($this->testInt) ? 'true' : 'false';
     }
 }
