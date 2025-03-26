@@ -20,9 +20,6 @@ use tehwave\Shortcodes\Tests\Shortcodes\CastString;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputAttributes;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputBody;
 
-/**
- * @group shortcode
- */
 class ShortcodeTest extends TestCase
 {
     /**
@@ -138,7 +135,6 @@ class ShortcodeTest extends TestCase
             '[output_attributes 123 url=http://wordpress.com/ foo bar="baz"]' => [0 => '123', 'url' => 'http://wordpress.com/', 1 => 'foo', 'bar' => 'baz'],
             '[output_attributes foo="bar" baz="bing"]content[/output_attributes]' => ['foo' => 'bar', 'baz' => 'bing'],
             '[output_attributes foobar="hello" fooBar="world"]' => ['foobar' => 'world'], // test normalizing
-            // fix "test-int" check
         ])->each(function ($output, $tag) {
             $compiledContent = Compiler::compile($tag, $this->shortcodes);
 
