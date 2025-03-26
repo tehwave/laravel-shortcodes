@@ -3,8 +3,20 @@
 namespace tehwave\Shortcodes\Tests;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Crypt;
 use tehwave\Shortcodes\Compiler;
 use tehwave\Shortcodes\Shortcode;
+use tehwave\Shortcodes\Tests\Shortcodes\CastArray;
+use tehwave\Shortcodes\Tests\Shortcodes\CastBoolean;
+use tehwave\Shortcodes\Tests\Shortcodes\CastCollection;
+use tehwave\Shortcodes\Tests\Shortcodes\CastDate;
+use tehwave\Shortcodes\Tests\Shortcodes\CastEncrypted;
+use tehwave\Shortcodes\Tests\Shortcodes\CastFloat;
+use tehwave\Shortcodes\Tests\Shortcodes\CastHashed;
+use tehwave\Shortcodes\Tests\Shortcodes\CastInteger;
+use tehwave\Shortcodes\Tests\Shortcodes\CastJson;
+use tehwave\Shortcodes\Tests\Shortcodes\CastObject;
+use tehwave\Shortcodes\Tests\Shortcodes\CastString;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputAttributes;
 use tehwave\Shortcodes\Tests\Shortcodes\OutputBody;
 
@@ -27,6 +39,18 @@ class ShortcodeTest extends TestCase
         $this->shortcodes = collect([
             new OutputBody,
             new OutputAttributes,
+            new CastBoolean,
+            new CastDate,
+            new CastFloat,
+            new CastInteger,
+            new CastArray,
+            new CastDate,
+            new CastCollection,
+            new CastHashed,
+            new CastJson,
+            new CastObject,
+            new CastString,
+            new CastEncrypted,
         ]);
     }
 
@@ -110,6 +134,7 @@ class ShortcodeTest extends TestCase
             '[output_attributes 123 http://wordpress.com/ 0 "foo" bar]' => [0 => '123', 1 => 'http://wordpress.com/', 2 => 0, 3 => 'foo', 4 => 'bar'],
             '[output_attributes 123 url=http://wordpress.com/ foo bar="baz"]' => [0 => '123', 'url' => 'http://wordpress.com/', 1 => 'foo', 'bar' => 'baz'],
             '[output_attributes foo="bar" baz="bing"]content[/output_attributes]' => ['foo' => 'bar', 'baz' => 'bing'],
+            '[output_attributes foobar="hello" fooBar="world"]' => ['foobar' => 'world'], // test normalizing
         ])->each(function ($output, $tag) {
             $compiledContent = Compiler::compile($tag, $this->shortcodes);
 
@@ -210,5 +235,49 @@ class ShortcodeTest extends TestCase
         $compiledContent = Shortcode::compile($content);
 
         $this->assertSame($content, $compiledContent);
+    }
+
+    /**
+     * Data provider for test_shortcode_attributes_casting.
+     */
+    public static function shortcodeAttributesCastingProvider(): array
+    {
+        return [
+            'boolean true' => ['[cast_boolean testBoolean="1"]', 'true'],
+            'boolean false' => ['[cast_boolean testBoolean="0"]', 'true'],
+            'date 2023-06-29' => ['[cast_date testDate="2023-06-29"]', 'true'],
+            'date 2020-01-01' => ['[cast_date testDate="2020-01-01"]', 'true'],
+            'integer 3' => ['[cast_integer testInt="3"]', 'true'],
+            'integer 35460' => ['[cast_integer testInt="35460"]', 'true'],
+            'float 5.67' => ['[cast_float testFloat="5.67"]', 'true'],
+            'float 15.011' => ['[cast_float testFloat="15.011"]', 'true'],
+            'string example' => ['[cast_string testString="example"]', 'true'],
+            'array 1,2,3' => ['[cast_array testArray=\'{"key":"value"}\']', 'true'],
+            'collection a,b,c' => ['[cast_collection testCollection=\'{"key":"value"}\']', 'true'],
+            'object {"key":"value"}' => ['[cast_object testObject=\'{"key":"value"}\']', 'true'],
+            'json {"key":"value"}' => ['[cast_json testJson=\'{"key":"value"}\']', 'true'],
+            'string empty' => ['[cast_string testString=""]', 'true'],
+            'boolean empty' => ['[cast_boolean testBoolean=""]', 'true'],
+            'date empty' => ['[cast_date testDate=""]', 'true'],
+            'integer empty' => ['[cast_integer testInt=""]', 'true'],
+            'float empty' => ['[cast_float testFloat=""]', 'true'],
+            'array empty' => ['[cast_array testArray=""]', 'false'],
+            'collection empty' => ['[cast_collection testCollection=""]', 'true'],
+            'object empty' => ['[cast_object testObject=""]', 'false'],
+            'json empty' => ['[cast_json testJson=""]', 'false'],
+            // FIXME `A facade root has not been set.`
+            // 'encrypted secret' => [sprintf('[cast_encrypted testEncrypted="%s"]', Crypt::encrypt('secret')), 'true', 'encrypted'],
+            // 'hashed password' => [sprintf('[cast_hashed testHashed="%s"]', Crypt::encrypt('password')), 'true', 'hashed'],
+        ];
+    }
+
+    /**
+     * @dataProvider shortcodeAttributesCastingProvider
+     */
+    public function test_shortcode_attributes_casting(string $tag, string $expected): void
+    {
+        $compiledContent = Compiler::compile($tag, $this->shortcodes);
+
+        $this->assertSame($expected, $compiledContent);
     }
 }

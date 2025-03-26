@@ -2,11 +2,15 @@
 
 namespace tehwave\Shortcodes;
 
+use Exception;
+use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 abstract class Shortcode
 {
+    use HasAttributes;
+
     /**
      * The cache of a list of Shortcode classes.
      *
@@ -29,13 +33,6 @@ abstract class Shortcode
     protected $tag;
 
     /**
-     * The shortcode's attributes.
-     *
-     * @var array|null
-     */
-    protected $attributes = null;
-
-    /**
      * The shortcode's body content.
      *
      * @var string
@@ -44,12 +41,14 @@ abstract class Shortcode
 
     /**
      * Create a new Shortcode instance.
+     *
+     * @param  array<string,mixed>  $attributes
      */
-    public function __construct(?array $attributes = null, ?string $body = null)
+    public function __construct(array $attributes = [], ?string $body = null)
     {
         $this->attributes = $attributes;
 
-        $this->body = $body;
+        $this->body = (string) $body;
     }
 
     /**
@@ -95,6 +94,19 @@ abstract class Shortcode
         // Set up our inputs and run our handle.
         $this->attributes = Compiler::resolveAttributes($attributes);
 
+        foreach ((array) $this->attributes as $key => $value) {
+
+            // Cast the attribute if it has a cast.
+            if (is_string($key) && $this->hasCast($key)) {
+                try {
+                    $this->attributes[$key] = $this->castAttribute($key, $value);
+                } catch (Exception) {
+                    // For whatever reason, we couldn't cast the attribute.
+                    $this->attributes[$key] = null;
+                }
+            }
+        }
+
         $this->body = $body;
 
         return $this->handle();
@@ -125,7 +137,7 @@ abstract class Shortcode
     {
         if (! isset(static::$namespacedClassesCache)) {
             $namespacedClasses = static::getClasses()
-                ->transform(function ($class) {
+                ->transform(function (string $class): string {
                     return sprintf(
                         '%sShortcodes\%s',
                         app()->getNamespace(),
@@ -145,7 +157,7 @@ abstract class Shortcode
     public static function getInstantiatedClasses(): Collection
     {
         return self::getNamespacedClasses()
-            ->transform(function ($class) {
+            ->transform(function (string $class) {
                 return new $class;
             });
     }
@@ -173,5 +185,65 @@ abstract class Shortcode
     public static function compile(string $content, ?Collection $shortcodes = null): string
     {
         return Compiler::compile($content, $shortcodes);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array
+     */
+    public function getCasts()
+    {
+        // Lowercase the keys because we normalize attribute keys when parsing from regex,
+        // and we need the cast keys to match with the attribute keys when casting.
+        return array_change_key_case($this->casts, CASE_LOWER);
+    }
+
+    /**
+     * Determine whether an attribute should be cast to a native type.
+     *
+     * @param  string  $key
+     * @param  array|string|null  $types
+     * @return bool
+     */
+    public function hasCast($key, $types = null)
+    {
+        if (array_key_exists($key, $this->getCasts())) {
+            return $types ? in_array($this->getCastType($key), (array) $types, true) : true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the format for database stored dates.
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat ?: app('db')->connection()->getQueryGrammar()->getDateFormat();
+    }
+
+    /**
+     * Dynamically retrieve attributes on the shortcode.
+     *
+     * @return mixed
+     */
+    public function __get(string $key)
+    {
+        if (! $key) {
+            return;
+        }
+
+        // Key must be lowercase as this is how we store and normalize attributes.
+        if (isset($this->attributes[strtolower($key)])) {
+
+            // Any attributes with casts are already casted.
+            return $this->attributes[strtolower($key)];
+        }
+
+        // Not looking for an attribute.
+        return $this->{$key} ?? null;
     }
 }

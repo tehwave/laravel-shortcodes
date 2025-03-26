@@ -31,9 +31,11 @@ composer require tehwave/laravel-shortcodes
 
 ## Usage
 
-`Laravel Shortcodes` work much like Wordpress' [Shortcode API](https://codex.wordpress.org/Shortcode_API).
+`Laravel Shortcodes` work much like WordPress' [Shortcode API](https://codex.wordpress.org/Shortcode_API).
 
 ```php
+<?php
+
 use tehwave\Shortcodes\Shortcode;
 
 $compiledContent = Shortcode::compile('[uppercase]Laravel Shortcodes[/uppercase]');
@@ -56,7 +58,7 @@ Each `Shortcode` class contains a `handle` method, that you may use to output in
 Within the `handle` method, you may access the `attributes` and `body` properties.
 
 > [!NOTE]  
-> All values in the `attributes` array are cast to `string` type when parsed.
+> All values in the `attributes` array are cast to `string` type when parsed unless specifically cast to a type via the `$casts` property.
 
 ```php
 <?php
@@ -117,6 +119,8 @@ class ItalicizeText extends Shortcode
 Run a string through the compiler to parse all shortcodes.
 
 ```php
+<?php
+
 use tehwave\Shortcodes\Shortcode;
 
 $compiledContent = Shortcode::compile('[italics escape_html="true"]<b>Hello World</b>[/italics]');
@@ -127,6 +131,8 @@ $compiledContent = Shortcode::compile('[italics escape_html="true"]<b>Hello Worl
 You may specify a list of instantiated `Shortcode` classes to limit what shortcodes are parsed.
 
 ```php
+<?php
+
 use tehwave\Shortcodes\Shortcode;
 
 $shortcodes = collect([
@@ -136,6 +142,125 @@ $shortcodes = collect([
 $compiledContent = Shortcode::compile('[uppercase]Hello World[/uppercase]', $shortcodes);
 
 // [uppercase]Hello World[/uppercase]
+```
+
+### Using Casts
+
+`Laravel Shortcodes` supports casting attributes to various data types. This can be useful when you need to ensure that the attributes passed to your shortcodes are of a specific type.
+
+#### Available Casts
+
+- `boolean`
+- `integer`
+- `float`
+- `string`
+- `array`
+- `collection`
+- `object`
+- `json`
+- `encrypted`
+- `hashed`
+- `date` (casts to `Carbon\Carbon` instance)
+
+#### Example
+
+To use casts, you need to create a shortcode class and specify the casts in the `$casts` property.
+
+```php
+<?php
+
+namespace App\Shortcodes;
+
+use tehwave\Shortcodes\Shortcode;
+use Carbon\Carbon;
+
+class ExampleShortcode extends Shortcode
+{
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_active' => 'boolean',
+        'count' => 'integer',
+        'price' => 'float',
+        'name' => 'string',
+        'tags' => 'array',
+        'options' => 'collection',
+        'metadata' => 'object',
+        'config' => 'json',
+        'published_at' => 'date',
+    ];
+
+    /**
+     * The code to run when the Shortcode is being compiled.
+     *
+     * @return string|null
+     */
+    public function handle(): ?string
+    {
+        $publishedAt = $this->attributes['published_at'] instanceof Carbon
+            ? $this->attributes['published_at']->toFormattedDateString()
+            : 'N/A';
+
+        $tags = implode(', ', $this->attributes['tags']);
+
+        $options = $this->attributes['options']->implode(', ');
+
+        return sprintf(
+            'Active: %s, Count: %d, Price: %.2f, Name: %s, Published At: %s, Tags: %s, Options: %s',
+            $this->attributes['is_active'] === true ? 'Yes' : 'No',
+            $this->attributes['count'],
+            $this->attributes['price'],
+            $this->attributes['name'],
+            $publishedAt,
+            $tags,
+            $options
+        );
+    }
+}
+```
+
+When you compile content with this shortcode, the attributes will be automatically cast to the specified types.
+
+```php
+<?php
+
+use tehwave\Shortcodes\Shortcode;
+
+$compiledContent = Shortcode::compile('[example is_active="1" count="10" price="99.99" name="Sample" published_at="2023-06-29" tags=\'["tag1","tag2","tag3"]\' options=\'["option1","option2"]\']');
+
+// Active: Yes, Count: 10, Price: 99.99, Name: Sample, Published At: Jun 29, 2023, Tags: tag1, tag2, tag3, Options: option1, option2
+```
+
+### Accessing Attributes
+
+You can retrieve the attributes as direct properties of the shortcode instance.
+
+```php
+<?php
+
+namespace App\Shortcodes;
+
+use tehwave\Shortcodes\Shortcode;
+
+class ExampleShortcode extends Shortcode
+{
+    protected $casts = [
+        'is_active' => 'boolean',
+        'count' => 'integer',
+    ];
+
+    public function handle(): ?string
+    {
+        // Access attributes as properties
+        $isActive = $this->is_active;
+        $count = $this->count;
+
+        return sprintf('Active: %s, Count: %d', $isActive === true ? 'Yes' : 'No', $count);
+    }
+}
 ```
 
 ### Example
@@ -215,6 +340,10 @@ For any security related issues, send a mail to [peterchrjoergensen+shortcodes@g
 ## Changelog
 
 See [CHANGELOG](CHANGELOG.md) for details on what has changed.
+
+## Upgrade Guide
+
+See [UPGRADING.md](UPGRADING.md) for details on how to upgrade.
 
 ## Contributions
 
