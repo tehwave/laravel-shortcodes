@@ -201,9 +201,26 @@ class ShortcodeTest extends TestCase
      */
     public function test_get_namespaced_classes(): void
     {
-        $namespacedClasses = Shortcode::getNamespacedClasses();
+        $name = 'TestGetNamespacedClasses';
+        $path = $this->app->path('Shortcodes').'/'.$name.'.php';
 
-        $this->assertInstanceOf(Collection::class, $namespacedClasses);
+        $this->artisan('make:shortcode', ['name' => $name])->assertExitCode(0);
+
+        try {
+            Shortcode::clearCache();
+
+            $namespacedClasses = Shortcode::getNamespacedClasses();
+
+            $this->assertInstanceOf(Collection::class, $namespacedClasses);
+
+            $expectedClass = app()->getNamespace().'Shortcodes\\'.$name;
+
+            $this->assertContains($expectedClass, $namespacedClasses->toArray());
+        } finally {
+            unlink($path);
+
+            Shortcode::clearCache();
+        }
     }
 
     /**
@@ -211,9 +228,29 @@ class ShortcodeTest extends TestCase
      */
     public function test_get_instantiated_classes(): void
     {
-        $instances = Shortcode::getInstantiatedClasses();
+        $name = 'TestGetInstantiatedClasses';
+        $path = $this->app->path('Shortcodes').'/'.$name.'.php';
 
-        $this->assertInstanceOf(Collection::class, $instances);
+        $this->artisan('make:shortcode', ['name' => $name])->assertExitCode(0);
+
+        require_once $path;
+
+        try {
+            Shortcode::clearCache();
+
+            $instances = Shortcode::getInstantiatedClasses();
+
+            $this->assertInstanceOf(Collection::class, $instances);
+            $this->assertNotEmpty($instances);
+
+            $instances->each(function ($instance) {
+                $this->assertInstanceOf(Shortcode::class, $instance);
+            });
+        } finally {
+            unlink($path);
+
+            Shortcode::clearCache();
+        }
     }
 
     /**
