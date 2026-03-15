@@ -204,9 +204,9 @@ class ShortcodeTest extends TestCase
         $name = 'TestGetNamespacedClasses';
         $path = $this->app->path('Shortcodes').'/'.$name.'.php';
 
-        $this->artisan('make:shortcode', ['name' => $name])->assertExitCode(0);
-
         try {
+            $this->artisan('make:shortcode', ['name' => $name])->assertExitCode(0);
+
             Shortcode::clearCache();
 
             $namespacedClasses = Shortcode::getNamespacedClasses();
@@ -217,7 +217,9 @@ class ShortcodeTest extends TestCase
 
             $this->assertContains($expectedClass, $namespacedClasses->toArray());
         } finally {
-            unlink($path);
+            if (file_exists($path)) {
+                unlink($path);
+            }
 
             Shortcode::clearCache();
         }
@@ -231,11 +233,11 @@ class ShortcodeTest extends TestCase
         $name = 'TestGetInstantiatedClasses';
         $path = $this->app->path('Shortcodes').'/'.$name.'.php';
 
-        $this->artisan('make:shortcode', ['name' => $name])->assertExitCode(0);
-
-        require_once $path;
-
         try {
+            $this->artisan('make:shortcode', ['name' => $name])->assertExitCode(0);
+
+            require_once $path;
+
             Shortcode::clearCache();
 
             $instances = Shortcode::getInstantiatedClasses();
@@ -247,7 +249,9 @@ class ShortcodeTest extends TestCase
                 $this->assertInstanceOf(Shortcode::class, $instance);
             });
         } finally {
-            unlink($path);
+            if (file_exists($path)) {
+                unlink($path);
+            }
 
             Shortcode::clearCache();
         }
