@@ -30,7 +30,7 @@
         "brianium/paratest": "^7.4",
         "laravel/pint": "^1.21",
         "orchestra/testbench": "^9.0|^10.0",
-        "phpunit/phpunit": "^10.5|^11.5.3"
+        "phpunit/phpunit": "^11.5"
     },
     "autoload": {
         "psr-4": {
