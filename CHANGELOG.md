@@ -2,6 +2,21 @@
 
 Any notable changes to `Laravel Shortcodes` will be documented in this file.
 
+## v3.0.0 (XX-XX-XXXX)
+
+### Versions compatibility changed
+
+Laravel 11 support has been dropped now that it no longer receives security updates.
+
+Laravel 12 and 13 are now supported.
+
+| Laravel | PHP | Branch |
+|---|---|---|
+|  13 | 8.3 - 8.5 | [master](https://github.com/tehwave/laravel-shortcodes/tree/master) |
+|  12 | 8.2 - 8.5 | [master](https://github.com/tehwave/laravel-shortcodes/tree/master) |
+|  11 | 8.2 - 8.4 | [2.x](https://github.com/tehwave/laravel-shortcodes/tree/2.x) |
+|  10 and below | 8.1 and below | [1.x](https://github.com/tehwave/laravel-shortcodes/tree/1.x) |
+
 ## v2.0.0 (XX-XX-XXXX)
 
 ### Versions compatibility changed
@@ -12,7 +27,7 @@ Laravel 11 and 12 as well as PHP 8.2, 8.3, and 8.4 are now supported.
 
 | Laravel | PHP | Branch |
 |---|---|---|
-|  11+ | 8.2+ | [master](https://github.com/tehwave/laravel-shortcodes/tree/master) |
+|  11 - 12 | 8.2+ | [2.x](https://github.com/tehwave/laravel-shortcodes/tree/2.x) |
 |  10 and below | 8.1 and below | [1.x](https://github.com/tehwave/laravel-shortcodes/tree/1.x) |
 
 ### Additions to attribute handling

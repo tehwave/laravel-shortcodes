@@ -4,6 +4,7 @@ namespace tehwave\Shortcodes\Tests;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
+use PHPUnit\Framework\Attributes\DataProvider;
 use tehwave\Shortcodes\Compiler;
 use tehwave\Shortcodes\Shortcode;
 use tehwave\Shortcodes\Tests\Shortcodes\CastArray;
@@ -25,7 +26,7 @@ class ShortcodeTest extends TestCase
     /**
      * A list of test shortcodes.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     private $shortcodes;
 
@@ -312,9 +313,7 @@ class ShortcodeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider shortcodeAttributesCastingProvider
-     */
+    #[DataProvider('shortcodeAttributesCastingProvider')]
     public function test_shortcode_attributes_casting(string $tag, string $expected): void
     {
         $compiledContent = Compiler::compile($tag, $this->shortcodes);

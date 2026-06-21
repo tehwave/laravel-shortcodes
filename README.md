@@ -11,14 +11,16 @@ Simple, elegant WordPress-like Shortcodes the Laravel way.
 
 The package has been developed and tested to work with the latest supported versions of PHP and Laravel as well as the following minimum requirements:
 
-- Laravel 11
+- Laravel 12
 - PHP 8.2
 
 ### Version Compatibility
 
 | Laravel | PHP | Branch |
 |---|---|---|
-|  11+ | 8.2+ | [master](https://github.com/tehwave/laravel-shortcodes/tree/master) |
+|  13 | 8.3 - 8.5 | [master](https://github.com/tehwave/laravel-shortcodes/tree/master) |
+|  12 | 8.2 - 8.5 | [master](https://github.com/tehwave/laravel-shortcodes/tree/master) |
+|  11 | 8.2 - 8.4 | [2.x](https://github.com/tehwave/laravel-shortcodes/tree/2.x) |
 |  10 and below | 8.1 and below | [1.x](https://github.com/tehwave/laravel-shortcodes/tree/1.x) |
 
 ## Installation

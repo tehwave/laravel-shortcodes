@@ -2,6 +2,7 @@
 
 namespace tehwave\Shortcodes\Tests\Shortcodes;
 
+use Illuminate\Support\Carbon;
 use tehwave\Shortcodes\Shortcode;
 
 class CastDate extends Shortcode
@@ -18,6 +19,6 @@ class CastDate extends Shortcode
      */
     public function handle(): ?string
     {
-        return $this->testDate instanceof \Illuminate\Support\Carbon ? 'true' : 'false';
+        return $this->testDate instanceof Carbon ? 'true' : 'false';
     }
 }

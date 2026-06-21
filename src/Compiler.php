@@ -19,7 +19,7 @@ class Compiler
      * Parse content by matching up against shortcodes
      * and dispatching them to handle the input.
      *
-     * @param  \tehwave\Shortcodes\Shortcode  $shortcode
+     * @param  Shortcode  $shortcode
      */
     public static function parse(string $content, $shortcode): string
     {
